@@ -26,7 +26,6 @@ int	main(int ac, char **av, char **env)
 	while (i < all.nbc)
 	{
 		waitpid(all.pid[i], NULL, 0);
-		printf("\n\nJUDANANANANA\n\n");
 		i++;
 	}
 	free(all.pid);

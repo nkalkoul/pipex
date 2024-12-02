@@ -46,11 +46,11 @@ void	ft_laschild(t_all *all, int *fds, int i)
 
 void	ft_midchild(t_all *all, int *fds)
 {
+	if (dup2(all->infile, STDIN_FILENO) == -1)
+		(perror("error6"), exit(1));
 	if (dup2(fds[1], STDOUT_FILENO) == -1)
 		(perror("error5"), exit(1));
 	close(fds[1]);
-	if (dup2(all->infile, STDIN_FILENO) == -1)
-		(perror("error6"), exit(1));
 	close(fds[0]);
 	close(all->infile);
 }
