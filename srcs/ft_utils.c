@@ -62,7 +62,7 @@ char	*ft_searchgood(char **cmd, char **env)
 		i++;
 	}
 	free(path);
-	return (perror("Error8"), NULL);
+	return (perror("Error path not found (bad cmd ?)"), NULL);
 }
 
 int	ft_chemstyle(t_all *all, int i)
@@ -88,4 +88,27 @@ int	ft_fill(t_all *all, char **env, char **av)
 	if (!all->pid)
 		return (ft_putstr_fd("problem malloc", 2), 1);
 	return (0);
+}
+
+void	ft_error(t_all *all, int *fds)
+{
+	printf("\n\nerror exist\n\n");
+	if (fds[0] > 0)
+		close(fds[0]);
+	if (fds[1] > 0)
+		close (fds[1]);
+	if (all->infile > 0)
+		close(all->infile);
+	if (all->pid)
+		free(all->pid);
+	if (all->chem)
+	{
+		free(all->chem);
+		printf("\n\nchemmm exist\n\n");
+	}
+	if (all->cmd){
+		ft_free_double(all->cmd);
+		printf("\n\ncmd exist\n\n");
+	}
+	exit(1);
 }

@@ -1,6 +1,12 @@
-le roi pele
-le roi nassim
-le roi francj
-le roi charle
-le roi
-le restaurant roi
+
+
+error exist
+
+
+
+chemmm exist
+
+
+
+cmd exist
+

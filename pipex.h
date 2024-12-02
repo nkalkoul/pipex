@@ -33,5 +33,6 @@ char	**ft_pathfinder(char **env);
 void	ft_delivery(t_all *all);
 int		ft_chemstyle(t_all *all, int i);
 int		ft_fill(t_all *all, char **env, char **av);
+void	ft_error(t_all *all, int *fds);
 
 #endif
