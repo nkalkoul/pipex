@@ -14,16 +14,21 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_all	all;
-	int		fds[2];
-	char	**path;
 	int		i;
+	t_all	all;
 
-	i = 0;
-	if (ac  != 3)
-		return (perror("Wrong number of args\nTest with 4 args"), 1);
-	if (ft_fill_all(&all, av, env, ac) == 1)
+	if (ac < 5)
+		return (ft_putstr_fd("Wrong number of args\nTest with 4 args", 2), 1);
+	if (ft_fill(&all, env, av) == 1)
 		return (1);
-	path = ft_pathfinder(env);
-	ft_delivery(av, path, fds, env);
+	ft_delivery(&all);
+	i = 0;
+	while (i < all.nbc)
+	{
+		waitpid(all.pid[i], NULL, 0);
+		printf("\n\nJUDANANANANA\n\n");
+		i++;
+	}
+	free(all.pid);
+	return (0);
 }

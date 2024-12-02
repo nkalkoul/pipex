@@ -1,4 +1,4 @@
-SRCS =	$(addprefix srcs/, pipex.c ft_utils.c)
+SRCS =	$(addprefix srcs/, pipex.c ft_utils.c ft_child.c)
 CC =	cc -g3 #-Wall -Werror -Wextra
 DIRLIB = ./libft
 

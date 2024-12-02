@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Déboguer Pipex",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/pipex",
+            "args": ["infile.txt", "sort", "cat", "outfile.txt"], 
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb",
+            "setupCommands": [
+                {
+                    "description": "Activer l'impression automatique des variables",
+                    "text": "enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Suivre les processus enfants après un fork",
+                    "text": "set follow-fork-mode child"
+                }
+            ]
+        }
+    ]
+}

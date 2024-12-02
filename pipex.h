@@ -22,11 +22,16 @@ typedef struct s_all
 	char	**env;
 	int		ac;
 	int		nbc;
+	char	*chem;
+	char	**cmd;
+	int		*pid;
+	int		infile;
 }			t_all;
 
-int		ft_fill_all(t_all *all, char **av, char **env, int ac);
-char	*ft_searchgood(char **path, char **cmd);
+char	*ft_searchgood(char **cmd, char **env);
 char	**ft_pathfinder(char **env);
-void	ft_delivery(char **av, char **path, int *fds, char **env);
+void	ft_delivery(t_all *all);
+int		ft_chemstyle(t_all *all, int i);
+int		ft_fill(t_all *all, char **env, char **av);
 
 #endif

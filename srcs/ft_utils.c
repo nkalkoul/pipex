@@ -12,15 +12,6 @@
 
 #include "../pipex.h"
 
-int	ft_fill_all(t_all *all, char **av, char **env, int ac)
-{
-	all->ac = ac;
-	all->av = av;
-	all->env = env;
-	all->nbc = ac - 3;
-	return (0);
-}
-
 char	**ft_pathfinder(char **env)
 {
 	int		i;
@@ -38,54 +29,63 @@ char	**ft_pathfinder(char **env)
 			fin = ft_split(new, ':');
 			if (!fin)
 				return (free(new), NULL);
-			return (fin);
+			return (free(new), fin);
 		}
 		i++;
 	}
 	return (perror("pas de search"), NULL);
 }
 
-char	*ft_searchgood(char **path, char **cmd)
+char	*ft_searchgood(char **cmd, char **env)
 {
 	int		i;
 	char	*new;
+	char	**path;
 
 	i = 0;
+	path = ft_pathfinder(env);
+	if (!path)
+		return (NULL);
 	if (access(cmd[0], X_OK) == 0)
 		return (cmd[0]);
 	while (path[i])
 	{
 		new = ft_re_strjoin(path[i], "/");
 		if (!new)
-			return (NULL);
+			return (ft_free_double(path), NULL);
 		new = ft_re_strjoin(new, cmd[0]);
 		if (!new)
-			return (NULL);
+			return (ft_free_double(path), NULL);
 		if (access(new, X_OK) == 0)
 			return (new);
 		free(new);
 		i++;
 	}
-	return (perror("pas de shlass"), NULL);
+	free(path);
+	return (perror("Error8"), NULL);
 }
 
-void	ft_delivery(char **av, char **path, int *fds, char **env)
+int	ft_chemstyle(t_all *all, int i)
 {
-	pid_t	forking;
-	int		fdfile;
-	char	*chem;
-	char	**cmd;
+	all->cmd = ft_split(all->av[i], ' ');
+	if ((all->cmd) == NULL)
+		return (1);
+	all->chem = ft_searchgood(all->cmd, all->env);
+	if ((all->chem) == NULL)
+		return (ft_free_double(all->cmd), 1);
+	return (0);
+}
 
-	forking = fork();
-	if (forking == 0)
-	{
-		fdfile = open(av[1], O_CREAT | O_RDWR, 0644);
-		dup2(fdfile, STDIN_FILENO);
-		close(fdfile);
-		cmd = ft_split(av[2], ' ');
-		chem = ft_searchgood(path, cmd);
-		execve(chem, cmd, env);
-	}
-	else if (forking != 0)
-		waitpid(forking, NULL, 0);
+int	ft_fill(t_all *all, char **env, char **av)
+{
+	all->cmd = NULL;
+	all->chem = NULL;
+	all->env = env;
+	all->av = av;
+	all->infile = -1;
+	all->nbc = ft_countdouble(av) - 3;
+	all->pid = malloc(sizeof(int) * (all->nbc));
+	if (!all->pid)
+		return (ft_putstr_fd("problem malloc", 2), 1);
+	return (0);
 }
