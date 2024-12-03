@@ -18,7 +18,7 @@ void	ft_firschild(t_all *all, int *fds)
 
 	infile = open(all->av[1], O_RDONLY);
 	if (infile == -1)
-		(perror("Error infile"), ft_error(all, fds));
+		(perror(all->av[1]), ft_error(all, fds));
 	if (dup2(infile, STDIN_FILENO) == -1)
 		(perror("error dup first"), ft_error(all, fds));
 	close(infile);
@@ -34,7 +34,7 @@ void	ft_laschild(t_all *all, int *fds, int i)
 
 	outfile = open(all->av[i + 3], O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (outfile == -1)
-		(perror("Error outfile"), ft_error(all, fds));
+		(perror(all->av[1]), ft_error(all, fds));
 	if (dup2(outfile, STDOUT_FILENO) == -1)
 		(perror("error dup last"), ft_error(all, fds));
 	close(outfile);
@@ -48,7 +48,7 @@ void	ft_midchild(t_all *all, int *fds)
 {
 	if (dup2(all->infile, STDIN_FILENO) == -1)
 		(perror("error dup mid"), ft_error(all, fds));
-	if (dup2(fds[0], STDOUT_FILENO) == -1)
+	if (dup2(fds[1], STDOUT_FILENO) == -1)
 		(perror("error dup mid"), ft_error(all, fds));
 	close(fds[1]);
 	close(fds[0]);
@@ -65,12 +65,8 @@ void	ft_give(t_all *all, int *fds, int i)
 		ft_midchild(all, fds);
 	if (ft_chemstyle(all, i + 2) == 1)
 		ft_error(all, fds);
-	char *cmd = "/bin/invalid/";
-	if (execve(cmd, all->cmd, all->env) == -1)
-	{
-		perror("error exec");
-		ft_error(all, fds);
-	}
+	if (execve(all->chem, all->cmd, all->env) == -1)
+		(perror("error exec"), ft_error(all, fds));
 }
 
 void	ft_delivery(t_all *all)

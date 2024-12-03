@@ -42,27 +42,27 @@ char	*ft_searchgood(char **cmd, char **env)
 	char	*new;
 	char	**path;
 
-	i = 0;
+	i = -1;
 	path = ft_pathfinder(env);
 	if (!path)
 		return (NULL);
 	if (access(cmd[0], X_OK) == 0)
-		return (cmd[0]);
-	while (path[i])
+		return (ft_free_double(path), ft_strdup(cmd[0]));
+	while (path[++i])
 	{
-		new = ft_re_strjoin(path[i], "/");
+		new = ft_strjoin(path[i], "/");
 		if (!new)
 			return (ft_free_double(path), NULL);
 		new = ft_re_strjoin(new, cmd[0]);
 		if (!new)
 			return (ft_free_double(path), NULL);
 		if (access(new, X_OK) == 0)
-			return (new);
+			return (ft_free_double(path), new);
 		free(new);
-		i++;
 	}
-	free(path);
-	return (perror("Error path not found (bad cmd ?)"), NULL);
+	ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(" : command not found\n", 2);
+	return (ft_free_double(path), NULL);
 }
 
 int	ft_chemstyle(t_all *all, int i)
@@ -70,9 +70,11 @@ int	ft_chemstyle(t_all *all, int i)
 	all->cmd = ft_split(all->av[i], ' ');
 	if ((all->cmd) == NULL)
 		return (1);
+	if (all->cmd[0] == NULL)
+		return (ft_putstr_fd("Empty cmd\n", 2), 1);
 	all->chem = ft_searchgood(all->cmd, all->env);
 	if ((all->chem) == NULL)
-		return (ft_free_double(all->cmd), 1);
+		return (ft_free_double(all->cmd), all->cmd = NULL, 1);
 	return (0);
 }
 
@@ -92,23 +94,17 @@ int	ft_fill(t_all *all, char **env, char **av)
 
 void	ft_error(t_all *all, int *fds)
 {
-	printf("\n\nerror exist\n\n");
-	if (fds[0] > 0)
+	if (fds && fds[0] > 0)
 		close(fds[0]);
-	if (fds[1] > 0)
+	if (fds && fds[1] > 0)
 		close (fds[1]);
 	if (all->infile > 0)
 		close(all->infile);
 	if (all->pid)
 		free(all->pid);
 	if (all->chem)
-	{
 		free(all->chem);
-		printf("\n\nchemmm exist\n\n");
-	}
-	if (all->cmd){
+	if (all->cmd)
 		ft_free_double(all->cmd);
-		printf("\n\ncmd exist\n\n");
-	}
 	exit(1);
 }
